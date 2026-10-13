@@ -1,0 +1,49 @@
+{
+  "name": "geotek-ai",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:22",
+  "remoteUser": "node",
+  "init": true,
+
+  // Sem workspaceFolder fixo: o padrão usa o nome real da pasta
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+
+  // node_modules em volume nomeado: mais rápido e isolado do host
+  "mounts": [
+    "source=${localWorkspaceFolderBasename}-node_modules,target=/workspaces/${localWorkspaceFolderBasename}/node_modules,type=volume"
+  ],
+
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "containerEnv": {
+    "npm_config_update_notifier": "false",
+    "npm_config_fund": "false",
+    "npm_config_audit": "false"
+  },
+
+  // Volume nasce como root; ajusta o dono e instala dependências uma única vez
+  "postCreateCommand": "sudo chown node:node node_modules && if [ -f package-lock.json ]; then npm ci; elif [ -f package.json ]; then npm install; fi",
+
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": { "label": "Geotek.ai", "onAutoForward": "notify" }
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "dbaeumer.vscode-eslint",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "editorconfig.editorconfig"
+      ],
+      "settings": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "eslint.validate": ["javascript", "typescript", "javascriptreact", "typescriptreact"]
+      }
+    }
+  }
+}
