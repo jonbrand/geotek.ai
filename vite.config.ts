@@ -12,6 +12,11 @@ export default defineConfig({
     },
   },
   plugins: [react()],
+  // O MapLibre 6 carrega o worker por caminho relativo ao próprio módulo;
+  // o pré-empacotamento do Vite muda esse caminho e o worker não sobe.
+  optimizeDeps: {
+    exclude: ["maplibre-gl"],
+  },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
