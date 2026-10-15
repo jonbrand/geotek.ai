@@ -75,3 +75,73 @@
     @apply bg-background text-foreground antialiased;
   }
 }
+
+/* Rótulos sobre o mapa (tela e PDF) */
+.rotulo-mapa {
+  @apply pointer-events-none whitespace-nowrap rounded bg-white/90 px-1.5 py-0.5 text-xs font-medium text-neutral-900 shadow;
+}
+.rotulo-disputa {
+  @apply bg-red-600 font-semibold text-white;
+}
+.ponto-aviso {
+  @apply h-4 w-4 rounded-full border-2 border-white bg-amber-500 shadow;
+}
+
+/* A folha de impressão só existe no papel; a tela some na impressão */
+.folha-impressao {
+  display: none;
+}
+@media print {
+  @page {
+    size: A4 landscape;
+    margin: 10mm;
+  }
+  body {
+    background: white;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+  .tela,
+  [data-sonner-toaster] {
+    display: none !important;
+  }
+  .folha-impressao {
+    display: block;
+    color: black;
+  }
+  .folha-impressao .rotulo-mapa {
+    font-size: 9px;
+  }
+}
+
+/* Ficha aberta ao clicar em algo no mapa */
+.ficha-mapa {
+  @apply space-y-1 text-sm text-neutral-900;
+}
+.ficha-titulo {
+  @apply pr-4 font-semibold;
+}
+.ficha-medida {
+  @apply tabular-nums;
+}
+.ficha-pasta {
+  @apply text-xs text-neutral-500;
+}
+.ficha-descricao {
+  @apply max-h-28 overflow-y-auto whitespace-pre-line break-words text-neutral-700;
+}
+.ficha-atributos {
+  @apply grid max-h-48 grid-cols-[auto_1fr] gap-x-3 gap-y-0.5 overflow-y-auto border-t pt-1 text-xs;
+}
+.ficha-atributos dt {
+  @apply text-neutral-500;
+}
+.ficha-atributos dd {
+  @apply break-words;
+}
+.ficha-aviso {
+  @apply text-xs text-amber-800;
+}
+.ficha-foto {
+  @apply mt-1 max-h-40 w-full rounded object-cover;
+}
